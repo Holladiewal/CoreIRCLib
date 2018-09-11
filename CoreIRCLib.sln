@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreIRCLib", "CoreIRCLib\CoreIRCLib.csproj", "{967ACEF5-CE66-48CB-B356-0F0C50E89462}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreIRCLib-Test", "CoreIRCLib-Test\CoreIRCLib-Test.csproj", "{EE445880-0742-4D39-8DC3-432404532353}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{967ACEF5-CE66-48CB-B356-0F0C50E89462}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{967ACEF5-CE66-48CB-B356-0F0C50E89462}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{967ACEF5-CE66-48CB-B356-0F0C50E89462}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{967ACEF5-CE66-48CB-B356-0F0C50E89462}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE445880-0742-4D39-8DC3-432404532353}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE445880-0742-4D39-8DC3-432404532353}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE445880-0742-4D39-8DC3-432404532353}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE445880-0742-4D39-8DC3-432404532353}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
