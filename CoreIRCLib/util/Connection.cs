@@ -5,10 +5,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Net.Sockets;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
+using OpenSSL.X509Certificate2Provider;
 
 namespace CoreIRCLib.util {
     public class Connection {
@@ -57,14 +59,15 @@ namespace CoreIRCLib.util {
                 var stream = (SslStream) NetworkStream;
                 var clientcert = new X509CertificateCollection();
                 if (certpath.Length > 0) {
-                    //var cert = new X509Certificate2(certpath, "", X509KeyStorageFlags.PersistKeySet);
-                    var pemString = File.ReadAllText(certpath);
-                    var cert = new X509Certificate2(Helpers.GetBytesFromPEM(pemString, PemStringType.Certificate));
-                    cert.PrivateKey = utils.DecodeRsaPrivateKey(Helpers.GetBytesFromPEM(pemString, PemStringType.RsaPrivateKey));
-                    clientcert.Add(cert);
+                    var privKeyString = File.ReadAllText(certpath + "irclib.key");
+                    var pubKeyString = File.ReadAllText(certpath + "irclib.cer");
+                    var provider = new CertificateFromFileProvider(pubKeyString, privKeyString);
+                    clientcert.Add(provider.Certificate);
+                    Console.WriteLine("CLIENT CERT!!!!!:::::: " + provider.Certificate.Thumbprint);
+                    Console.WriteLine("CLIENT CERT!!!!!:::::: " + provider.Certificate.HasPrivateKey);
                 }
                 
-                stream.AuthenticateAsClient("whydoyouhate.me", clientcert, SslProtocols.Tls, false);
+                stream.AuthenticateAsClient("whydoyouhate.me", clientcert, SslProtocols.Tls, true);
                 
 
             }

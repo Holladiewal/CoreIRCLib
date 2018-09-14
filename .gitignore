@@ -1,3 +1,7 @@
 .idea
 */bin
 */obj
+*.pem
+*.key
+*.cer
+*.user
