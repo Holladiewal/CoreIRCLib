@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Security;
 using System.Net.Sockets;
-using System.Runtime.InteropServices.ComTypes;
-using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
-using OpenSSL.X509Certificate2Provider;
+using OpenSSL.SSL;
+using SslProtocols = System.Security.Authentication.SslProtocols;
+using SslStream = System.Net.Security.SslStream;
 
 namespace CoreIRCLib.util {
     public class Connection {
@@ -25,8 +24,8 @@ namespace CoreIRCLib.util {
         internal bool pinged = false, ssl;
         private Queue<string> sendQueue = new Queue<string>();
 
-        private Thread queueClearer = new Thread(o => {
-            var conn = (Connection) o;
+        private Thread queueClearer = new Thread(conn_obj => {
+            var conn = (Connection) conn_obj;
             while (true) {
                 if (conn.pinged) {
                     while (conn.sendQueue.Count > 0) {
@@ -59,16 +58,17 @@ namespace CoreIRCLib.util {
                 var stream = (SslStream) NetworkStream;
                 var clientcert = new X509CertificateCollection();
                 if (certpath.Length > 0) {
-                    var privKeyString = File.ReadAllText(certpath + "irclib.key");
-                    var pubKeyString = File.ReadAllText(certpath + "irclib.cer");
-                    var provider = new CertificateFromFileProvider(pubKeyString, privKeyString);
-                    clientcert.Add(provider.Certificate);
-                    Console.WriteLine("CLIENT CERT!!!!!:::::: " + provider.Certificate.Thumbprint);
-                    Console.WriteLine("CLIENT CERT!!!!!:::::: " + provider.Certificate.HasPrivateKey);
+                    if (!File.Exists(certpath + "puttygen.pem")) {
+                        Console.WriteLine("Generating cert.");
+                        var cert = CertHelper.genCert();
+                        CertHelper.saveCert(cert);
+                    }
+
+                    clientcert.Add(CertHelper.loadCert(certpath + "IRCLib.pfx", "irclib"));
                 }
                 
-                stream.AuthenticateAsClient("whydoyouhate.me", clientcert, SslProtocols.Tls, true);
-                
+                stream.AuthenticateAsClient("irc.whydoyouhate.me", clientcert, SslProtocols.Tls, true);
+
 
             }
             

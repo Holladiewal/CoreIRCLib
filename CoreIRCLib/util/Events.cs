@@ -56,6 +56,8 @@ namespace CoreIRCLib.util {
         public static event EventHandler<StringEventArgs> CapNakEvent;
         public static event EventHandler<StringEventArgs> CapLsEvent;
 
+        
+        // Invoking Functions
         public void OnMessage(MessageEventArgs args) {
             Message?.Invoke(this, args);
         }  

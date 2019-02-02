@@ -5,6 +5,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using CoreIRCLib.Definitions;
 using CoreIRCLib.util;
+using Org.BouncyCastle.Crypto.Parameters;
+
 //using System.Runtime.Remoting.Channels;
 
 namespace CoreIRCLib {
@@ -96,10 +98,15 @@ namespace CoreIRCLib {
                 }
             }
             else {
+                var param = new List<string>();
                 message = message.Remove(0, 1);
                 var meta = message.Split(new []{':'}, 2)[0];
 
                 var splitMeta = meta.Split(new []{' '}, 4);
+                
+                param.AddRange(meta.Split(' '));
+                param.Add(message.Split(new []{':'}, 2)[1]);
+                
                 var actor = splitMeta[0];
                 var action = splitMeta[1];
                 var target = splitMeta[2];
@@ -207,24 +214,202 @@ namespace CoreIRCLib {
         }
 
         internal void ParseNumeric(string message, string remainder, string numeric, string actor, string target) {
+            switch (numeric[0]) {
+                case '0': {
+                    ParserNumeric0xx(message, remainder, numeric, actor, target);
+                    break;
+                }
+                case '2': {
+                    ParserNumeric2xx(message, remainder, numeric, actor, target);
+                    break;
+                }
+                case '3': {
+                    ParserNumeric3xx(message, remainder, numeric, actor, target);
+                    break;
+                }
+                case '4': {
+                    ParserNumeric4xx(message, remainder, numeric, actor, target);
+                    break;
+                }
+                case '5': {
+                    ParserNumeric5xx(message, remainder, numeric, actor, target);
+                    break;
+                }
+                case '6': {
+                    ParserNumeric6xx(message, remainder, numeric, actor, target);
+                    break;
+                }
+                case '7': {
+                    ParserNumeric7xx(message, remainder, numeric, actor, target);
+                    break;
+                }
+                case '9': {
+                    ParserNumeric9xx(message, remainder, numeric, actor, target);
+                    break;
+                }
+            }
+        }
+
+        private void ParserNumeric0xx(string message, string remainder, string numeric, string actor, string target) {
             switch (numeric) {
                 case "001":
                     // RPL WELCOME, welcome message, shall not be parsed
                     break;
                 
                 case "002":
-                    //RPL YOURHOST, info about the server and server software
+                    //RPL YOURHOST, info about the server and server software. Do not parse.
                     break;
                 
                 case "003":
-                    //RPL CREATED, creation time of the server
+                    //RPL CREATED, creation time of the server. Do not parse.
                     break;
                 
                 case "004": 
                     //RPL_MYINFO, lot of server info data, parsable. use 005 instead, please.
                     break;
 
-                case "005": { break; }
+                case "005": {
+                    //RPL_ISSUPPORT
+                    break;
+                }
+
+                case "010": {
+                    //RPL_BOUNCE
+                    var hostname = target;
+                    var port = message;
+                    
+                    break;
+                }
+            }
+            
+        }
+
+        private void ParserNumeric2xx(string message, string remainder, string numeric, string actor, string target) {
+            switch (numeric) {
+                case "221": { break; }
+                case "251": { break; }
+                case "252": { break; }
+                case "253": { break; }
+                case "254": { break; }
+                case "255": { break; }
+                case "256": { break; }
+                case "257": { break; }
+                case "258": { break; }
+                case "259": { break; }
+                case "263": { break; }
+                case "265": { break; }
+                case "266": { break; }
+                case "276": { break; }
+            }
+        }
+
+        private void ParserNumeric3xx(string message, string remainder, string numeric, string actor, string target) {
+            switch (numeric) {
+                case "300": { break; }
+                case "301": { break; }
+                case "302": { break; }
+                case "303": { break; }
+                case "304": { break; }
+                case "305": { break; }
+                case "306": { break; }
+                case "311": { break; }
+                case "312": { break; }
+                case "313": { break; }
+                case "314": { break; }
+                case "317": { break; }
+                case "318": { break; }
+                case "319": { break; }
+                case "321": { break; }
+                case "322": { break; }
+                case "323": { break; }
+                case "324": { break; }
+                case "331": { break; }
+                case "332": { break; }
+                case "333": { break; }
+                case "341": { break; }
+                case "346": { break; }
+                case "347": { break; }
+                case "348": { break; }
+                case "349": { break; }
+                case "351": { break; }
+                case "353": { break; }
+                case "366": { break; }
+                case "367": { break; }
+                case "368": { break; }
+                case "369": { break; }
+                case "375": { break; }
+                case "372": { break; }
+                case "376": { break; }
+                case "381": { break; }
+                case "382": { break; }
+            }
+        }
+
+        private void ParserNumeric4xx(string message, string remainder, string numeric, string actor, string target) {
+            switch (numeric) {
+                case "400": { break; }
+                case "401": { break; }
+                case "402": { break; }
+                case "403": { break; }
+                case "404": { break; }
+                case "405": { break; }
+                case "421": { break; }
+                case "422": { break; }
+                case "432": { break; }
+                case "433": { break; }
+                case "441": { break; }
+                case "442": { break; }
+                case "443": { break; }
+                case "451": { break; }
+                case "461": { break; }
+                case "462": { break; }
+                case "464": { break; }
+                case "465": { break; }
+                case "471": { break; }
+                case "472": { break; }
+                case "473": { break; }
+                case "474": { break; }
+                case "475": { break; }
+                case "481": { break; }
+                case "482": { break; }
+                case "483": { break; }
+                case "491": { break; }
+            }
+        }
+
+        private void ParserNumeric5xx(string message, string remainder, string numeric, string actor, string target) {
+            switch (numeric) {
+                //Mode errors
+                case "501": { break; }
+                case "502": { break; }
+            }
+        }
+        
+        private void ParserNumeric6xx(string message, string remainder, string numeric, string actor, string target) {
+            switch (numeric) {
+                //Starttls
+                case "670": { break; }
+                case "691": { break; }
+            }
+        }
+        private void ParserNumeric7xx(string message, string remainder, string numeric, string actor, string target) {
+            switch (numeric) {
+                case "723": { break; }
+            }
+        }
+        
+        private void ParserNumeric9xx(string message, string remainder, string numeric, string actor, string target) {
+            //SASL
+            switch (numeric) {
+                case "900": { break; }
+                case "901": { break; }
+                case "902": { break; }
+                case "903": { break; }
+                case "904": { break; }
+                case "905": { break; }
+                case "906": { break; }
+                case "907": { break; }
+                case "908": { break; }
             }
         }
     }

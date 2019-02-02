@@ -1,4 +1,5 @@
-﻿using CoreIRCLib;
+﻿using System;
+using CoreIRCLib;
 using CoreIRCLib.util;
 
 namespace CoreIRCLib_Test
@@ -7,7 +8,7 @@ namespace CoreIRCLib_Test
     
     public class IRClient {
         public static void Main(string[] args) {
-            var client = new Client("whydoyouhate.me", 6697, "IRCLibTest", "IRCLibTest", "gnarr", "I am an IRCLib", true, true, "PLAIN",  @".\");
+            var client = new Client("whydoyouhate.me", 6697, "IRCLibTest", "IRCLibTest", "gnarr", "I am an IRCLib", true, true, "EXTERNAL",  @"C:\RiderProjects\CoreIRCLib\CoreIRCLib-Test\");
             
             Events.RawMessage += OnRawMessage;
             Events.Message += OnMessage;
